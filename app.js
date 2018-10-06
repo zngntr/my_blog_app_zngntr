@@ -9,7 +9,17 @@ app.set("view engine", "ejs");
 // temprary data for exercise ---------
 var contents = [
             {name: "Halil Zengin", image: "https://www.theaccessgroup.com/media/17985/blog-intro.jpg"},
+            {name: "Furkan Yıldız", image: "https://image.freepik.com/free-vector/blogging-background-with-elements-in-flat-design_23-2147559818.jpg"},{name: "Halil Zengin", image: "https://www.theaccessgroup.com/media/17985/blog-intro.jpg"},
+            {name: "Furkan Yıldız", image: "https://image.freepik.com/free-vector/blogging-background-with-elements-in-flat-design_23-2147559818.jpg"},{name: "Halil Zengin", image: "https://www.theaccessgroup.com/media/17985/blog-intro.jpg"},
+            {name: "Furkan Yıldız", image: "https://image.freepik.com/free-vector/blogging-background-with-elements-in-flat-design_23-2147559818.jpg"},{name: "Halil Zengin", image: "https://www.theaccessgroup.com/media/17985/blog-intro.jpg"},
+            {name: "Furkan Yıldız", image: "https://image.freepik.com/free-vector/blogging-background-with-elements-in-flat-design_23-2147559818.jpg"},{name: "Halil Zengin", image: "https://www.theaccessgroup.com/media/17985/blog-intro.jpg"},
+            {name: "Furkan Yıldız", image: "https://image.freepik.com/free-vector/blogging-background-with-elements-in-flat-design_23-2147559818.jpg"},{name: "Halil Zengin", image: "https://www.theaccessgroup.com/media/17985/blog-intro.jpg"},
+            {name: "Furkan Yıldız", image: "https://image.freepik.com/free-vector/blogging-background-with-elements-in-flat-design_23-2147559818.jpg"},{name: "Halil Zengin", image: "https://www.theaccessgroup.com/media/17985/blog-intro.jpg"},
             {name: "Furkan Yıldız", image: "https://image.freepik.com/free-vector/blogging-background-with-elements-in-flat-design_23-2147559818.jpg"},
+            {name: "Betty Blur", image: "https://congdongdigitalmarketing.com/wp-content/uploads/2017/09/Content-viral-696x374.jpg"},
+            {name: "Betty Blur", image: "https://congdongdigitalmarketing.com/wp-content/uploads/2017/09/Content-viral-696x374.jpg"},
+            {name: "Betty Blur", image: "https://congdongdigitalmarketing.com/wp-content/uploads/2017/09/Content-viral-696x374.jpg"},
+            {name: "Betty Blur", image: "https://congdongdigitalmarketing.com/wp-content/uploads/2017/09/Content-viral-696x374.jpg"},
             {name: "Betty Blur", image: "https://congdongdigitalmarketing.com/wp-content/uploads/2017/09/Content-viral-696x374.jpg"}
         ];
 //--------------------------------------        
