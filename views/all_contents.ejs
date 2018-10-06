@@ -1,0 +1,12 @@
+<% include partials/header %>
+
+<h1> Cotent pagee</h1>
+
+<% contents.forEach(function(content) { %>
+    <div>
+        <h4><%= content.name %></h4>
+        <img src = "<%= content.image %>">
+    </div>
+<% }); %>
+
+<% include partials/footer %>
