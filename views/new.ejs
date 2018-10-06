@@ -1,0 +1,10 @@
+<% include partials/header %>
+<h3>Yeni yazı oluştur</h3>
+
+<form action= "/all_contents" method= "POST">
+    <input type= "text" name="name" placeholder= "Buraya yaz..">
+    <input type= "url" name="image" placeholder= "resim url" required >
+    <button>Gönder</button>
+</form>
+
+<% include partials/footer %>
