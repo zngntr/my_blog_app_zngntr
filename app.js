@@ -1,56 +1,91 @@
-var express = require("express");
-var bodyParser = require("body-parser");
-var app = express();
+var express     = require("express"),
+    app         = express(),
+    bodyParser  = require("body-parser"),
+    mongoose    = require("mongoose");
 
+mongoose.connect('mongodb://localhost:27017/forum_db', { useNewUrlParser: true });
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 
+//>>------------ SCHEMA SETUP------------
 
-// temprary data for exercise ---------
-var contents = [
-            {name: "Halil Zengin", image: "https://www.theaccessgroup.com/media/17985/blog-intro.jpg"},
-            {name: "Furkan Yıldız", image: "https://image.freepik.com/free-vector/blogging-background-with-elements-in-flat-design_23-2147559818.jpg"},{name: "Halil Zengin", image: "https://www.theaccessgroup.com/media/17985/blog-intro.jpg"},
-            {name: "Furkan Yıldız", image: "https://image.freepik.com/free-vector/blogging-background-with-elements-in-flat-design_23-2147559818.jpg"},{name: "Halil Zengin", image: "https://www.theaccessgroup.com/media/17985/blog-intro.jpg"},
-            {name: "Furkan Yıldız", image: "https://image.freepik.com/free-vector/blogging-background-with-elements-in-flat-design_23-2147559818.jpg"},{name: "Halil Zengin", image: "https://www.theaccessgroup.com/media/17985/blog-intro.jpg"},
-            {name: "Furkan Yıldız", image: "https://image.freepik.com/free-vector/blogging-background-with-elements-in-flat-design_23-2147559818.jpg"},{name: "Halil Zengin", image: "https://www.theaccessgroup.com/media/17985/blog-intro.jpg"},
-            {name: "Furkan Yıldız", image: "https://image.freepik.com/free-vector/blogging-background-with-elements-in-flat-design_23-2147559818.jpg"},{name: "Halil Zengin", image: "https://www.theaccessgroup.com/media/17985/blog-intro.jpg"},
-            {name: "Furkan Yıldız", image: "https://image.freepik.com/free-vector/blogging-background-with-elements-in-flat-design_23-2147559818.jpg"},{name: "Halil Zengin", image: "https://www.theaccessgroup.com/media/17985/blog-intro.jpg"},
-            {name: "Furkan Yıldız", image: "https://image.freepik.com/free-vector/blogging-background-with-elements-in-flat-design_23-2147559818.jpg"},
-            {name: "Betty Blur", image: "https://congdongdigitalmarketing.com/wp-content/uploads/2017/09/Content-viral-696x374.jpg"},
-            {name: "Betty Blur", image: "https://congdongdigitalmarketing.com/wp-content/uploads/2017/09/Content-viral-696x374.jpg"},
-            {name: "Betty Blur", image: "https://congdongdigitalmarketing.com/wp-content/uploads/2017/09/Content-viral-696x374.jpg"},
-            {name: "Betty Blur", image: "https://congdongdigitalmarketing.com/wp-content/uploads/2017/09/Content-viral-696x374.jpg"},
-            {name: "Betty Blur", image: "https://congdongdigitalmarketing.com/wp-content/uploads/2017/09/Content-viral-696x374.jpg"}
-        ];
-//--------------------------------------        
-        
-// landing page
+var blogSchema = new mongoose.Schema({
+   name: String,
+   image: String
+});
+
+//<<-------------------------------------
+
+var BlogContent = mongoose.model("BlogContent", blogSchema);
+
+/*BlogContent.create(
+      {
+          name: "Burcu Adıvar", 
+          image: "https://neilpatel.com/wp-content/uploads/2017/02/blogging.jpg",
+      },
+      function(err, blog){
+       if(err){
+           console.log(err);
+       } else {
+           console.log("-------Blog oluşturuldu-----------");
+           console.log(blog);
+       }
+     });*/
+
+
+// >>------------LANDING PAGE------------
+
 app.get("/", function(req, res){
     res.render("landing");
 });
 
+//<<-------------------------------------
 
-// all contents which has been posted
+
+// >>------------ SHOW PAGE -------------
+
 app.get("/all_contents", function(req, res){
-    res.render("all_contents", {contents: contents});
+    //Get all blogs from DB
+    BlogContent.find({}, function(err, allContents){
+        if(err){
+            console.log(err);
+        } else {
+            res.render("all_contents", {contents: allContents});
+        }
+    });
 });
 
-// new content POST route
+//<<------------------------------------
+
+
+//>>------ NEW CONTENT POST ROUTE-------
+
 app.post("/all_contents", function(req, res){
    //get data from form and add to contents array
     var name =  req.body.name;
     var image = req.body.image;
     var newContent = {name: name, image: image};
-    contents.push(newContent);
     
-   //redirect to contents page
-   res.redirect("/all_contents");
+    // create new content and save to DB
+    BlogContent.create(newContent, function(err, newlyCreated){
+        if(err){
+            console.log(err); // will be showing errors on user interface in soon
+        } else {
+            //redirect to contents page
+            res.redirect("/all_contents");
+        }
+    });
 });
 
-//new content create route
+//<<-------------------------------------
+
+//>>--- NEW CONTENT CREATING SHOW ROUTE--
+
 app.get("/all_contents/new", function(req, res) {
     res.render("new.ejs");
 });
+
+//<<-------------------------------------
 
 app.listen(process.env.PORT, process.env.IP, function(){
    console.log("Server is running.."); 
