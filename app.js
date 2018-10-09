@@ -1,36 +1,49 @@
 var express     = require("express"),
     app         = express(),
     bodyParser  = require("body-parser"),
-    mongoose    = require("mongoose");
+    BlogContent  = require("./models/all_blog"),
+    mongoose    = require("mongoose"),
+    Comment     = require("./models/comment");
+//    removeEverything      = require("./seeds");
 
+    
 mongoose.connect('mongodb://localhost:27017/forum_db', { useNewUrlParser: true });
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
+//removeEverything();
 
-//>>------------ SCHEMA SETUP------------
 
-var blogSchema = new mongoose.Schema({
-   name: String,
-   image: String
-});
-
-//<<-------------------------------------
-
-var BlogContent = mongoose.model("BlogContent", blogSchema);
-
-/*BlogContent.create(
+/*
+BlogContent.create(
       {
           name: "Burcu Adıvar", 
           image: "https://neilpatel.com/wp-content/uploads/2017/02/blogging.jpg",
+          description: "Buraya geilyorrrdhjkhdlshdl :))",
+          comments: []
       },
       function(err, blog){
        if(err){
            console.log(err);
        } else {
            console.log("-------Blog oluşturuldu-----------");
+           Comment.create({
+               text:"ikinci yorum",
+               author: "Burcu"
+           }, function(err, comment){
+               if(err) {
+                   console.log(err);
+               } else {
+                   blog.comments.push(comment);
+                   blog.save();
+                   console.log(comment);
+               }
+           });
            console.log(blog);
        }
-     });*/
+     });
+
+*/
+
 
 
 // >>------------LANDING PAGE------------
@@ -50,7 +63,7 @@ app.get("/all_contents", function(req, res){
         if(err){
             console.log(err);
         } else {
-            res.render("all_contents", {contents: allContents});
+            res.render("index", {contents: allContents});
         }
     });
 });
@@ -64,7 +77,8 @@ app.post("/all_contents", function(req, res){
    //get data from form and add to contents array
     var name =  req.body.name;
     var image = req.body.image;
-    var newContent = {name: name, image: image};
+    var description = req.body.description;
+    var newContent = {name: name, image: image, description: description};
     
     // create new content and save to DB
     BlogContent.create(newContent, function(err, newlyCreated){
@@ -86,6 +100,22 @@ app.get("/all_contents/new", function(req, res) {
 });
 
 //<<-------------------------------------
+
+//>>--------CONTENT VIEW IN DETAILS BASED ID--------
+
+app.get("/all_contents/:id", function(req, res) {
+    // find the post with provided ID
+    BlogContent.findById(req.params.id).populate("comments").exec(function(err, foundContent){
+       if(err) {
+           console.log(err);
+       } else {
+           // render show template with that post
+           console.log(foundContent);
+           res.render("show", {contents: foundContent});
+       }
+    });
+    
+});
 
 app.listen(process.env.PORT, process.env.IP, function(){
    console.log("Server is running.."); 
